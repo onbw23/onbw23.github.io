@@ -1193,11 +1193,27 @@
                 return true;
             };
 
-            document.addEventListener('click', (e) => tryOpenLightbox(e));
+            let touchStart = null;
+            document.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0];
+                touchStart = { x: touch.clientX, y: touch.clientY };
+            }, { passive: true });
+
             document.addEventListener('touchend', (e) => {
+                if (!touchStart) return;
+                const touch = e.changedTouches[0];
+                const dx = Math.abs(touch.clientX - touchStart.x);
+                const dy = Math.abs(touch.clientY - touchStart.y);
+                touchStart = null;
+                if (dx > 10 || dy > 10) return;
                 if (!tryOpenLightbox(e)) return;
                 e.preventDefault();
             }, { passive: false });
+
+            document.addEventListener('click', (e) => {
+                if ('ontouchstart' in window) return;
+                tryOpenLightbox(e);
+            });
         };
 
         /* Edit Toggle */

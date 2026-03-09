@@ -19,9 +19,7 @@
             --radius-md: 14px;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
@@ -82,8 +80,7 @@
             margin-top: 24px;
         }
 
-        .toolbar button,
-        .toolbar label {
+        .toolbar button {
             appearance: none;
             border: none;
             cursor: pointer;
@@ -94,8 +91,7 @@
             transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
         }
 
-        .toolbar button:hover,
-        .toolbar label:hover {
+        .toolbar button:hover {
             transform: translateY(-1px);
         }
 
@@ -111,15 +107,12 @@
             border: 1px solid var(--line);
         }
 
-        .file-input {
-            display: none;
-        }
-
         .board {
             display: grid;
             gap: 20px;
         }
 
+        /* Section */
         .section {
             background: rgba(255, 255, 255, 0.82);
             backdrop-filter: blur(14px);
@@ -161,34 +154,124 @@
             white-space: nowrap;
         }
 
-        .section-body {
-            display: grid;
-            grid-template-columns: 300px minmax(0, 1fr);
-            gap: 20px;
-            padding: 24px;
+        /* Section Groups Container */
+        .section-groups {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 20px;
         }
 
-        .note-card {
-            padding: 22px;
+        /* Group Card */
+        .group-card {
             border: 1px solid var(--line);
             border-radius: var(--radius-lg);
             background: linear-gradient(180deg, #fffdfa 0%, #faf6f1 100%);
+            overflow: hidden;
+        }
+
+        .group-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .group-title-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font: inherit;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+            outline: none;
+            padding: 4px 0;
+            min-width: 0;
+        }
+
+        .wrap.editing .group-title-input {
+            background: white;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+            padding: 8px 12px;
+        }
+
+        .wrap.editing .group-title-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(182, 147, 122, 0.12);
+        }
+
+        .wrap:not(.editing) .group-title-input {
+            pointer-events: none;
+            cursor: default;
+        }
+
+        .group-photo-count {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: #7f5f4a;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .group-delete-btn {
+            appearance: none;
+            border: 1px solid rgba(220, 80, 80, 0.2);
+            background: rgba(220, 80, 80, 0.06);
+            color: #c44;
+            border-radius: 999px;
+            padding: 6px 14px;
+            font: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.18s ease;
+            flex-shrink: 0;
+        }
+
+        .group-delete-btn:hover {
+            background: rgba(220, 80, 80, 0.14);
+        }
+
+        .group-body {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 20px;
+        }
+
+        /* Memo */
+        .note-card {
+            padding: 18px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+            background: white;
         }
 
         .note-card h3 {
-            margin: 0 0 14px;
-            font-size: 16px;
-            letter-spacing: -0.02em;
+            margin: 0 0 10px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            color: var(--muted);
+            text-transform: uppercase;
         }
 
         .memo {
             width: 100%;
-            min-height: 188px;
+            min-height: 80px;
             resize: vertical;
             border: 1px solid #dfd7cf;
             border-radius: var(--radius-md);
-            background: white;
-            padding: 16px;
+            background: #faf8f5;
+            padding: 14px;
             font: inherit;
             font-size: 14px;
             line-height: 1.65;
@@ -201,79 +284,37 @@
             box-shadow: 0 0 0 4px rgba(182, 147, 122, 0.12);
         }
 
-        .chip-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 14px;
+        .wrap:not(.editing) .note-card {
+            border-color: transparent;
+            background: rgba(247, 243, 238, 0.5);
+            padding: 16px;
         }
 
-        .chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 8px 10px;
-            border-radius: 999px;
-            background: white;
-            border: 1px solid var(--line);
-            color: var(--muted);
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .chip-delete {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
+        .wrap:not(.editing) .memo {
             border: none;
-            background: rgba(0, 0, 0, 0.15);
-            color: white;
-            font-size: 9px;
-            cursor: pointer;
+            background: transparent;
+            resize: none;
+            pointer-events: none;
+            min-height: auto;
             padding: 0;
-            line-height: 1;
-            flex-shrink: 0;
         }
 
-        .chip-delete:hover {
-            background: rgba(0, 0, 0, 0.35);
+        .wrap:not(.editing) .note-card:has(.memo:placeholder-shown) {
+            display: none;
         }
 
-        .chip-add-wrap {
-            display: inline-flex;
+        .wrap:not(.editing) .note-card h3 {
+            display: none;
         }
 
-        .chip-add-input {
-            border: 1px dashed var(--line);
-            border-radius: 999px;
-            padding: 7px 10px;
-            font: inherit;
-            font-size: 12px;
-            color: var(--ink);
-            background: white;
-            outline: none;
-            width: 100px;
-        }
-
-        .chip-add-input::placeholder {
-            color: var(--muted);
-            opacity: 0.5;
-        }
-
-        .chip-add-input:focus {
-            border-color: var(--accent);
-            border-style: solid;
-        }
-
+        /* Gallery */
         .gallery {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 14px;
         }
 
+        /* Photo Slot */
         .photo-slot {
             border-radius: 18px;
             overflow: hidden;
@@ -318,7 +359,7 @@
             padding: 18px;
             text-align: center;
             cursor: pointer;
-            transition: background 0.18s ease, transform 0.18s ease;
+            transition: background 0.18s ease;
         }
 
         .photo-slot:hover .slot-inner {
@@ -349,10 +390,6 @@
             line-height: 1.5;
         }
 
-        .photo-slot.has-image .slot-overlay {
-            opacity: 1;
-        }
-
         .slot-preview {
             position: absolute;
             inset: 0;
@@ -380,6 +417,10 @@
             backdrop-filter: blur(8px);
             opacity: 0;
             transition: opacity 0.18s ease;
+        }
+
+        .photo-slot.has-image .slot-overlay {
+            opacity: 1;
         }
 
         .photo-slot:hover .slot-overlay {
@@ -415,30 +456,77 @@
             background: rgba(255, 255, 255, 0.28);
         }
 
-        .slot-memo {
-            display: block;
-            width: 100%;
-            border: none;
-            border-top: 1px solid var(--line);
-            padding: 8px 12px;
-            font: inherit;
-            font-size: 12px;
-            line-height: 1.5;
-            color: var(--ink);
-            background: white;
-            resize: none;
-            outline: none;
-        }
-
-        .slot-memo:focus {
-            background: #fffaf6;
-        }
-
-        .slot-memo::placeholder {
+        /* Add Buttons */
+        .add-slot-btn {
+            aspect-ratio: 4 / 5;
+            border-radius: 18px;
+            border: 2px dashed var(--line);
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
             color: var(--muted);
-            opacity: 0.6;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease;
         }
 
+        .add-slot-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(182, 147, 122, 0.04);
+        }
+
+        .add-slot-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: var(--accent-soft);
+            font-size: 20px;
+            color: var(--accent);
+        }
+
+        .add-group-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 24px;
+            border: 2px dashed var(--line);
+            border-radius: var(--radius-lg);
+            background: transparent;
+            cursor: pointer;
+            font: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--muted);
+            transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease;
+        }
+
+        .add-group-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(182, 147, 122, 0.04);
+        }
+
+        .add-group-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: var(--accent-soft);
+            font-size: 18px;
+            color: var(--accent);
+        }
+
+        /* Lightbox */
         .lightbox {
             position: fixed;
             inset: 0;
@@ -502,41 +590,110 @@
             background: rgba(255, 255, 255, 0.24);
         }
 
-        .add-slot-btn {
-            aspect-ratio: 4 / 5;
-            border-radius: 18px;
-            border: 2px dashed var(--line);
-            background: transparent;
-            cursor: pointer;
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 8px;
-            color: var(--muted);
-            font: inherit;
-            font-size: 14px;
-            font-weight: 600;
-            transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        .add-slot-btn:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-            background: rgba(182, 147, 122, 0.04);
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
-        .add-slot-icon {
-            width: 44px;
-            height: 44px;
+        .modal {
+            width: min(680px, 100%);
+            max-height: 80vh;
+            background: white;
+            border-radius: var(--radius-xl);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .modal-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .modal-head h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
+            border: none;
+            background: var(--accent-soft);
+            color: var(--ink);
+            font-size: 18px;
+            cursor: pointer;
             display: grid;
             place-items: center;
-            background: var(--accent-soft);
-            font-size: 20px;
-            color: var(--accent);
         }
 
+        .modal-close:hover {
+            background: #e4d6cb;
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px;
+        }
+
+        .modal-textarea {
+            width: 100%;
+            min-height: 320px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--ink);
+            background: #faf8f5;
+            resize: vertical;
+            outline: none;
+        }
+
+        .modal-textarea:focus {
+            border-color: var(--accent);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            padding: 16px 24px;
+            border-top: 1px solid var(--line);
+        }
+
+        .modal-actions .btn-primary {
+            border: none;
+            cursor: pointer;
+            border-radius: 999px;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* Edit Mode Visibility */
         .wrap:not(.editing) .photo-slot:not(.has-image) {
             display: none;
         }
@@ -553,11 +710,11 @@
             display: none;
         }
 
-        .wrap:not(.editing) .chip-delete {
+        .wrap:not(.editing) .add-group-btn {
             display: none;
         }
 
-        .wrap:not(.editing) .chip-add-wrap {
+        .wrap:not(.editing) .group-delete-btn {
             display: none;
         }
 
@@ -568,11 +725,8 @@
             box-shadow: 0 10px 24px rgba(34, 34, 34, 0.12);
         }
 
+        /* Responsive */
         @media (max-width: 1080px) {
-            .section-body {
-                grid-template-columns: 1fr;
-            }
-
             .gallery {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
@@ -592,19 +746,24 @@
                 padding: 22px 20px 16px;
             }
 
-            .section-body {
-                padding: 18px;
+            .section-groups {
+                padding: 14px;
+            }
+
+            .group-body {
+                padding: 14px;
             }
 
             .gallery {
                 grid-template-columns: 1fr;
             }
 
-            .lightbox {
+            .lightbox, .modal-overlay {
                 padding: 16px;
             }
         }
 
+        /* Print */
         @media print {
             body {
                 background: white;
@@ -615,33 +774,28 @@
                 margin: 0;
             }
 
-            .hero,
-            .section {
+            .hero, .section {
                 box-shadow: none;
                 border: 1px solid #ddd;
                 break-inside: avoid;
             }
 
-            .toolbar,
-            .mini-btn,
-            .slot-sub,
-            .slot-inner,
-            .slot-overlay,
-            .lightbox,
-            .add-slot-btn,
-            .chip-delete,
-            .chip-add-wrap,
-            .photo-slot:not(.has-image) {
+            .toolbar, .mini-btn, .slot-sub, .slot-inner, .slot-overlay,
+            .lightbox, .add-slot-btn, .add-group-btn, .group-delete-btn,
+            .photo-slot:not(.has-image), .modal-overlay {
                 display: none !important;
             }
 
-            .slot-memo:empty,
-            .slot-memo:placeholder-shown {
-                display: none !important;
+            .wrap:not(.editing) .note-card {
+                background: transparent;
             }
 
             .board {
                 gap: 14px;
+            }
+
+            .group-card {
+                break-inside: avoid;
             }
         }
     </style>
@@ -654,80 +808,11 @@
             <div class="toolbar">
                 <button type="button" class="btn-primary" onclick="window.print()">PDF / 인쇄 저장</button>
                 <button type="button" class="btn-soft" id="editToggleBtn">편집</button>
-                <button type="button" class="btn-soft" id="exportHtmlBtn">HTML로 저장</button>
+                <button type="button" class="btn-soft" id="exportJsonBtn">JSON 내보내기</button>
             </div>
         </section>
 
-        <main class="board">
-            <section class="section">
-                <div class="section-head">
-                    <div class="section-title-wrap">
-                        <h2>투샷</h2>
-                        <p>커플 중심의 메인 구도와 분위기 레퍼런스</p>
-                    </div>
-                    <div class="section-count">0 Photos</div>
-                </div>
-                <div class="section-body">
-                    <aside class="note-card">
-                        <h3>구도 메모</h3>
-                        <textarea class="memo" placeholder="예시&#10;- 정면보다 자연스럽게 시선 교차&#10;- 서서 마주보기 / 걷는 컷 / 뒤에서 안는 컷&#10;- 과한 포즈보다 자연스러운 분위기"></textarea>
-                        <div class="chip-list">
-                            <span class="chip">서서 마주보기</span>
-                            <span class="chip">걷는 컷</span>
-                            <span class="chip">뒤에서 안기</span>
-                            <span class="chip">자연스러운 스냅</span>
-                        </div>
-                    </aside>
-                    <div class="gallery" data-group="couple"></div>
-                </div>
-            </section>
-
-            <section class="section">
-                <div class="section-head">
-                    <div class="section-title-wrap">
-                        <h2>신부 단독컷</h2>
-                        <p>드레스 라인, 시선 처리, 손동작 중심 레퍼런스</p>
-                    </div>
-                    <div class="section-count">0 Photos</div>
-                </div>
-                <div class="section-body">
-                    <aside class="note-card">
-                        <h3>구도 메모</h3>
-                        <textarea class="memo" placeholder="예시&#10;- 드레스 실루엣이 잘 보이게&#10;- 측면 / 반측면 / 시선 내린 컷&#10;- 부케 활용 컷 위주"></textarea>
-                        <div class="chip-list">
-                            <span class="chip">측면 포즈</span>
-                            <span class="chip">시선 내리기</span>
-                            <span class="chip">부케 컷</span>
-                            <span class="chip">드레스 라인 강조</span>
-                        </div>
-                    </aside>
-                    <div class="gallery" data-group="bride"></div>
-                </div>
-            </section>
-
-            <section class="section">
-                <div class="section-head">
-                    <div class="section-title-wrap">
-                        <h2>신랑 단독컷</h2>
-                        <p>턱시도 핏, 담백한 포즈, 클래식 무드 중심 레퍼런스</p>
-                    </div>
-                    <div class="section-count">0 Photos</div>
-                </div>
-                <div class="section-body">
-                    <aside class="note-card">
-                        <h3>구도 메모</h3>
-                        <textarea class="memo" placeholder="예시&#10;- 과한 연출보다 담백하고 단정하게&#10;- 자켓 여미는 컷 / 앉는 컷 / 측면 컷&#10;- 시선은 정면 또는 살짝 옆"></textarea>
-                        <div class="chip-list">
-                            <span class="chip">정면 스탠딩</span>
-                            <span class="chip">자켓 정리</span>
-                            <span class="chip">앉는 컷</span>
-                            <span class="chip">클래식 무드</span>
-                        </div>
-                    </aside>
-                    <div class="gallery" data-group="groom"></div>
-                </div>
-            </section>
-        </main>
+        <main class="board" id="board"></main>
     </div>
 
     <div class="lightbox" id="lightbox">
@@ -736,72 +821,49 @@
         <p class="lightbox-memo" id="lightboxMemo"></p>
     </div>
 
+    <div class="modal-overlay" id="jsonModal">
+        <div class="modal">
+            <div class="modal-head">
+                <h3>data.json 내보내기</h3>
+                <button class="modal-close" type="button">&times;</button>
+            </div>
+            <div class="modal-body">
+                <textarea class="modal-textarea" id="jsonOutput" readonly></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-primary" id="copyJsonBtn">클립보드에 복사</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        const sectionConfigs = [
-            { key: "couple", title: "투샷" },
-            { key: "bride", title: "신부 단독" },
-            { key: "groom", title: "신랑 단독" }
-        ];
+        let slotCounter = 0;
 
-        const slotCounters = {};
-
-        const updateSectionCount = (section) => {
-            const count = section.querySelectorAll(".photo-slot.has-image").length;
-            section.querySelector(".section-count").textContent = `${count} Photos`;
+        const loadData = async () => {
+            try {
+                const res = await fetch('data.json');
+                if (!res.ok) throw new Error();
+                return await res.json();
+            } catch {
+                return {
+                    sections: [
+                        { key: 'couple', title: '투샷', description: '커플 중심의 메인 구도와 분위기 레퍼런스', groups: [] },
+                        { key: 'bride', title: '신부 단독컷', description: '드레스 라인, 시선 처리, 손동작 중심 레퍼런스', groups: [] },
+                        { key: 'groom', title: '신랑 단독컷', description: '턱시도 핏, 담백한 포즈, 클래식 무드 중심 레퍼런스', groups: [] }
+                    ]
+                };
+            }
         };
 
-        const createSlotMarkup = (groupKey, index, title) => {
-            const slotId = `${groupKey}-${index}`;
-
-            return `
-                <article class="photo-slot" data-slot="${slotId}">
-                    <div class="slot-image-area">
-                        <input type="file" accept="image/*" id="input-${slotId}" />
-                        <img class="slot-preview" alt="${title} 참고 이미지" />
-                        <label class="slot-inner" for="input-${slotId}">
-                            <div class="slot-icon">＋</div>
-                            <div class="slot-title">${title}</div>
-                            <div class="slot-sub">클릭해서 사진 추가<br />또는 이미지를 드래그해서 올리기</div>
-                        </label>
-                        <div class="slot-overlay">
-                            <div class="slot-name">이미지 없음</div>
-                            <div class="slot-actions">
-                                <button type="button" class="mini-btn" data-action="change">변경</button>
-                                <button type="button" class="mini-btn" data-action="remove">삭제</button>
-                            </div>
-                        </div>
-                    </div>
-                    <textarea class="slot-memo" rows="1" placeholder="메모..."></textarea>
-                </article>
-            `;
+        const updateSectionCount = (sectionEl) => {
+            const count = sectionEl.querySelectorAll('.photo-slot.has-image').length;
+            sectionEl.querySelector('.section-count').textContent = `${count} Photos`;
         };
 
-        const addSlotToGallery = (gallery, key, title) => {
-            if (!slotCounters[key]) slotCounters[key] = 0;
-            slotCounters[key] += 1;
-            const index = slotCounters[key];
-
-            const temp = document.createElement("div");
-            temp.innerHTML = createSlotMarkup(key, index, `${title} 레퍼런스 ${index}`).trim();
-            const slot = temp.firstElementChild;
-
-            gallery.insertBefore(slot, gallery.querySelector(".add-slot-btn"));
-            attachSingleSlotEvents(slot);
-        };
-
-        const buildGalleries = () => {
-            sectionConfigs.forEach(({ key, title }) => {
-                const gallery = document.querySelector(`.gallery[data-group="${key}"]`);
-
-                const addBtn = document.createElement("button");
-                addBtn.type = "button";
-                addBtn.className = "add-slot-btn";
-                addBtn.innerHTML = `<span class="add-slot-icon">＋</span><span>사진 추가</span>`;
-                addBtn.addEventListener("click", () => addSlotToGallery(gallery, key, title));
-                gallery.appendChild(addBtn);
-
-                updateSectionCount(gallery.closest(".section"));
-            });
+        const updateGroupPhotoCount = (groupEl) => {
+            const count = groupEl.querySelectorAll('.photo-slot.has-image').length;
+            const badge = groupEl.querySelector('.group-photo-count');
+            if (badge) badge.textContent = `${count}장`;
         };
 
         const readFileAsDataUrl = (file) => new Promise((resolve, reject) => {
@@ -812,275 +874,367 @@
         });
 
         const applyImageToSlot = async (slot, file) => {
-            if (!file || !file.type.startsWith("image/")) return;
+            if (!file || !file.type.startsWith('image/')) return;
 
-            const preview = slot.querySelector(".slot-preview");
-            const overlayName = slot.querySelector(".slot-name");
+            const preview = slot.querySelector('.slot-preview');
+            const overlayName = slot.querySelector('.slot-name');
             const dataUrl = await readFileAsDataUrl(file);
 
             preview.src = dataUrl;
             overlayName.textContent = file.name;
-            slot.classList.add("has-image");
-            updateSectionCount(slot.closest(".section"));
+            slot.classList.add('has-image');
+            slot.dataset.originalName = file.name;
+            slot.dataset.isUploaded = 'true';
+
+            const section = slot.closest('.section');
+            const group = slot.closest('.group-card');
+            if (section) updateSectionCount(section);
+            if (group) updateGroupPhotoCount(group);
         };
 
-        const attachSingleSlotEvents = (slot) => {
+        const attachSlotEvents = (slot) => {
             const input = slot.querySelector("input[type='file']");
             const changeBtn = slot.querySelector("[data-action='change']");
             const removeBtn = slot.querySelector("[data-action='remove']");
-            const imageArea = slot.querySelector(".slot-image-area");
-            const memo = slot.querySelector(".slot-memo");
+            const imageArea = slot.querySelector('.slot-image-area');
 
-            input.addEventListener("change", async (event) => {
-                const [file] = event.target.files;
+            input.addEventListener('change', async (e) => {
+                const [file] = e.target.files;
                 await applyImageToSlot(slot, file);
             });
 
-            changeBtn.addEventListener("click", () => input.click());
+            changeBtn.addEventListener('click', () => input.click());
 
-            removeBtn.addEventListener("click", () => {
-                const section = slot.closest(".section");
+            removeBtn.addEventListener('click', () => {
+                const section = slot.closest('.section');
+                const group = slot.closest('.group-card');
                 slot.remove();
-                updateSectionCount(section);
+                if (section) updateSectionCount(section);
+                if (group) updateGroupPhotoCount(group);
             });
 
-            memo.addEventListener("input", () => {
-                memo.style.height = "auto";
-                memo.style.height = `${memo.scrollHeight}px`;
-            });
-
-            ["dragenter", "dragover"].forEach((eventName) => {
-                imageArea.addEventListener(eventName, (event) => {
-                    event.preventDefault();
-                    if (!document.querySelector(".wrap").classList.contains("editing")) return;
-                    slot.style.transform = "translateY(-2px)";
+            ['dragenter', 'dragover'].forEach((evt) => {
+                imageArea.addEventListener(evt, (e) => {
+                    e.preventDefault();
+                    if (!document.querySelector('.wrap').classList.contains('editing')) return;
+                    slot.style.transform = 'translateY(-2px)';
                 });
             });
 
-            ["dragleave", "drop"].forEach((eventName) => {
-                imageArea.addEventListener(eventName, () => {
-                    slot.style.transform = "translateY(0)";
+            ['dragleave', 'drop'].forEach((evt) => {
+                imageArea.addEventListener(evt, () => {
+                    slot.style.transform = 'translateY(0)';
                 });
             });
 
-            imageArea.addEventListener("drop", async (event) => {
-                event.preventDefault();
-                if (!document.querySelector(".wrap").classList.contains("editing")) return;
-                const [file] = event.dataTransfer.files;
+            imageArea.addEventListener('drop', async (e) => {
+                e.preventDefault();
+                if (!document.querySelector('.wrap').classList.contains('editing')) return;
+                const [file] = e.dataTransfer.files;
                 await applyImageToSlot(slot, file);
             });
+        };
+
+        const createPhotoSlot = (photoPath = null) => {
+            slotCounter++;
+            const slotId = `slot-${slotCounter}`;
+            const fileName = photoPath ? photoPath.split('/').pop() : '';
+
+            const slot = document.createElement('article');
+            slot.className = 'photo-slot';
+            slot.dataset.slot = slotId;
+
+            if (photoPath) {
+                slot.classList.add('has-image');
+                slot.dataset.srcPath = photoPath;
+            }
+
+            slot.innerHTML = `
+                <div class="slot-image-area">
+                    <input type="file" accept="image/*" id="input-${slotId}" />
+                    <img class="slot-preview" src="${photoPath || ''}" alt="레퍼런스 이미지" />
+                    <label class="slot-inner" for="input-${slotId}">
+                        <div class="slot-icon">＋</div>
+                        <div class="slot-title">사진 추가</div>
+                        <div class="slot-sub">클릭 또는 드래그</div>
+                    </label>
+                    <div class="slot-overlay">
+                        <div class="slot-name">${fileName}</div>
+                        <div class="slot-actions">
+                            <button type="button" class="mini-btn" data-action="change">변경</button>
+                            <button type="button" class="mini-btn" data-action="remove">삭제</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            attachSlotEvents(slot);
+            return slot;
+        };
+
+        const createGroupCard = (sectionKey, groupData = {}) => {
+            const card = document.createElement('div');
+            card.className = 'group-card';
+            card.dataset.sectionKey = sectionKey;
+
+            const head = document.createElement('div');
+            head.className = 'group-head';
+
+            const titleInput = document.createElement('input');
+            titleInput.type = 'text';
+            titleInput.className = 'group-title-input';
+            titleInput.value = groupData.title || '';
+            titleInput.placeholder = '그룹 제목 입력...';
+
+            const photoCount = document.createElement('span');
+            photoCount.className = 'group-photo-count';
+            photoCount.textContent = `${(groupData.photos || []).length}장`;
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.className = 'group-delete-btn';
+            deleteBtn.textContent = '삭제';
+            deleteBtn.addEventListener('click', () => {
+                if (!confirm('이 그룹을 삭제하시겠습니까?')) return;
+                const section = card.closest('.section');
+                card.remove();
+                if (section) updateSectionCount(section);
+            });
+
+            head.appendChild(titleInput);
+            head.appendChild(photoCount);
+            head.appendChild(deleteBtn);
+            card.appendChild(head);
+
+            const body = document.createElement('div');
+            body.className = 'group-body';
+
+            const noteCard = document.createElement('div');
+            noteCard.className = 'note-card';
+            const memoLabel = document.createElement('h3');
+            memoLabel.textContent = '구도 메모';
+            noteCard.appendChild(memoLabel);
+
+            const memo = document.createElement('textarea');
+            memo.className = 'memo';
+            memo.placeholder = '구도, 포즈, 분위기 등을 메모...';
+            memo.value = groupData.memo || '';
+            noteCard.appendChild(memo);
+            body.appendChild(noteCard);
+
+            const gallery = document.createElement('div');
+            gallery.className = 'gallery';
+
+            (groupData.photos || []).forEach((photoPath) => {
+                gallery.appendChild(createPhotoSlot(photoPath));
+            });
+
+            const addSlotBtn = document.createElement('button');
+            addSlotBtn.type = 'button';
+            addSlotBtn.className = 'add-slot-btn';
+            addSlotBtn.innerHTML = '<span class="add-slot-icon">＋</span><span>사진 추가</span>';
+            addSlotBtn.addEventListener('click', () => {
+                gallery.insertBefore(createPhotoSlot(), addSlotBtn);
+            });
+            gallery.appendChild(addSlotBtn);
+
+            body.appendChild(gallery);
+            card.appendChild(body);
+
+            return card;
+        };
+
+        const createSection = (sectionData) => {
+            const section = document.createElement('section');
+            section.className = 'section';
+            section.dataset.key = sectionData.key;
+
+            const head = document.createElement('div');
+            head.className = 'section-head';
+            head.innerHTML = `
+                <div class="section-title-wrap">
+                    <h2>${sectionData.title}</h2>
+                    <p>${sectionData.description}</p>
+                </div>
+                <div class="section-count">0 Photos</div>
+            `;
+            section.appendChild(head);
+
+            const groupsContainer = document.createElement('div');
+            groupsContainer.className = 'section-groups';
+
+            (sectionData.groups || []).forEach((group) => {
+                groupsContainer.appendChild(createGroupCard(sectionData.key, group));
+            });
+
+            const addGroupBtn = document.createElement('button');
+            addGroupBtn.type = 'button';
+            addGroupBtn.className = 'add-group-btn';
+            addGroupBtn.innerHTML = '<span class="add-group-icon">＋</span><span>그룹 추가</span>';
+            addGroupBtn.addEventListener('click', () => {
+                const card = createGroupCard(sectionData.key);
+                groupsContainer.insertBefore(card, addGroupBtn);
+                card.querySelector('.group-title-input').focus();
+            });
+            groupsContainer.appendChild(addGroupBtn);
+
+            section.appendChild(groupsContainer);
+            updateSectionCount(section);
+
+            return section;
+        };
+
+        const renderBoard = (data) => {
+            const board = document.getElementById('board');
+            board.innerHTML = '';
+            data.sections.forEach((sectionData) => {
+                board.appendChild(createSection(sectionData));
+            });
+        };
+
+        /* Lightbox */
+        const closeLightbox = () => {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
         };
 
         const openLightbox = (slot) => {
-            const lightbox = document.getElementById("lightbox");
-            const lightboxImg = document.getElementById("lightboxImg");
-            const lightboxMemo = document.getElementById("lightboxMemo");
-            const preview = slot.querySelector(".slot-preview");
-            const memo = slot.querySelector(".slot-memo");
+            const preview = slot.querySelector('.slot-preview');
+            const groupCard = slot.closest('.group-card');
+            const groupTitle = groupCard?.querySelector('.group-title-input')?.value || '';
 
-            lightboxImg.src = preview.src;
-            lightboxImg.alt = preview.alt;
+            document.getElementById('lightboxImg').src = preview.src;
 
-            if (memo && memo.value.trim()) {
-                lightboxMemo.textContent = memo.value;
-                lightboxMemo.style.display = "block";
+            const memoEl = document.getElementById('lightboxMemo');
+            if (groupTitle) {
+                memoEl.textContent = groupTitle;
+                memoEl.style.display = 'block';
             } else {
-                lightboxMemo.style.display = "none";
+                memoEl.style.display = 'none';
             }
 
-            lightbox.classList.add("active");
-            document.body.style.overflow = "hidden";
-        };
-
-        const closeLightbox = () => {
-            const lightbox = document.getElementById("lightbox");
-            lightbox.classList.remove("active");
-            document.body.style.overflow = "";
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
         };
 
         const setupLightbox = () => {
-            const lightbox = document.getElementById("lightbox");
+            const lightbox = document.getElementById('lightbox');
 
-            lightbox.querySelector(".lightbox-close").addEventListener("click", closeLightbox);
-            lightbox.addEventListener("click", (e) => {
+            lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', (e) => {
                 if (e.target === lightbox) closeLightbox();
             });
-            document.addEventListener("keydown", (e) => {
-                if (e.key === "Escape") closeLightbox();
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                    closeJsonModal();
+                }
             });
 
             const tryOpenLightbox = (e) => {
-                const target = e.target;
-                const imageArea = target.closest(".slot-image-area");
+                const imageArea = e.target.closest('.slot-image-area');
                 if (!imageArea) return false;
-                if (target.closest(".slot-overlay") || target.closest(".slot-inner")) return false;
-                const slot = imageArea.closest(".photo-slot");
-                if (!slot || !slot.classList.contains("has-image")) return false;
+                if (e.target.closest('.slot-overlay') || e.target.closest('.slot-inner')) return false;
+                const slot = imageArea.closest('.photo-slot');
+                if (!slot || !slot.classList.contains('has-image')) return false;
                 openLightbox(slot);
                 return true;
             };
 
-            document.addEventListener("click", (e) => {
-                tryOpenLightbox(e);
-            });
-
-            document.addEventListener("touchend", (e) => {
+            document.addEventListener('click', (e) => tryOpenLightbox(e));
+            document.addEventListener('touchend', (e) => {
                 if (!tryOpenLightbox(e)) return;
                 e.preventDefault();
             }, { passive: false });
         };
 
+        /* Edit Toggle */
         const setupEditToggle = () => {
-            const wrap = document.querySelector(".wrap");
-            const btn = document.getElementById("editToggleBtn");
+            const wrap = document.querySelector('.wrap');
+            const btn = document.getElementById('editToggleBtn');
 
-            btn.addEventListener("click", () => {
-                const isEditing = wrap.classList.toggle("editing");
-                btn.textContent = isEditing ? "편집 완료" : "편집";
-                btn.classList.toggle("active", isEditing);
+            btn.addEventListener('click', () => {
+                const isEditing = wrap.classList.toggle('editing');
+                btn.textContent = isEditing ? '편집 완료' : '편집';
+                btn.classList.toggle('active', isEditing);
             });
         };
 
-        const setupChipEditing = () => {
-            document.querySelectorAll(".chip-list").forEach((chipList) => {
-                chipList.querySelectorAll(".chip").forEach((chip) => {
-                    const deleteBtn = document.createElement("button");
-                    deleteBtn.type = "button";
-                    deleteBtn.className = "chip-delete";
-                    deleteBtn.textContent = "×";
-                    deleteBtn.addEventListener("click", () => chip.remove());
-                    chip.appendChild(deleteBtn);
+        /* JSON Export */
+        const collectData = () => {
+            const sections = [];
+            document.querySelectorAll('.section').forEach((sectionEl) => {
+                const key = sectionEl.dataset.key;
+                const title = sectionEl.querySelector('.section-title-wrap h2').textContent;
+                const description = sectionEl.querySelector('.section-title-wrap p').textContent;
+
+                const groups = [];
+                sectionEl.querySelectorAll('.group-card').forEach((groupEl) => {
+                    const groupTitle = groupEl.querySelector('.group-title-input').value.trim();
+                    const memo = groupEl.querySelector('.memo').value.trim();
+
+                    const photos = [];
+                    groupEl.querySelectorAll('.photo-slot.has-image').forEach((slot) => {
+                        if (slot.dataset.srcPath) {
+                            photos.push(slot.dataset.srcPath);
+                        } else if (slot.dataset.isUploaded === 'true') {
+                            const fileName = slot.dataset.originalName || 'photo.jpg';
+                            const safeGroup = groupTitle || 'unnamed';
+                            photos.push(`images/${key}/${safeGroup}/${fileName}`);
+                        }
+                    });
+
+                    groups.push({ title: groupTitle, memo, photos });
                 });
 
-                const addWrap = document.createElement("div");
-                addWrap.className = "chip-add-wrap";
-                const input = document.createElement("input");
-                input.type = "text";
-                input.className = "chip-add-input";
-                input.placeholder = "태그 추가…";
-                input.addEventListener("keydown", (e) => {
-                    if (e.key !== "Enter" || !input.value.trim()) return;
-                    e.preventDefault();
+                sections.push({ key, title, description, groups });
+            });
 
-                    const chip = document.createElement("span");
-                    chip.className = "chip";
-                    chip.textContent = input.value.trim();
+            return { sections };
+        };
 
-                    const deleteBtn = document.createElement("button");
-                    deleteBtn.type = "button";
-                    deleteBtn.className = "chip-delete";
-                    deleteBtn.textContent = "×";
-                    deleteBtn.addEventListener("click", () => chip.remove());
-                    chip.appendChild(deleteBtn);
+        const closeJsonModal = () => {
+            document.getElementById('jsonModal').classList.remove('active');
+        };
 
-                    chipList.insertBefore(chip, addWrap);
-                    input.value = "";
-                });
-                addWrap.appendChild(input);
-                chipList.appendChild(addWrap);
+        const setupJsonExport = () => {
+            const modal = document.getElementById('jsonModal');
+            const output = document.getElementById('jsonOutput');
+            const copyBtn = document.getElementById('copyJsonBtn');
+
+            document.getElementById('exportJsonBtn').addEventListener('click', () => {
+                const data = collectData();
+                output.value = JSON.stringify(data, null, 2);
+                modal.classList.add('active');
+            });
+
+            modal.querySelector('.modal-close').addEventListener('click', closeJsonModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeJsonModal();
+            });
+
+            copyBtn.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(output.value);
+                } catch {
+                    output.select();
+                    document.execCommand('copy');
+                }
+                copyBtn.textContent = '복사 완료!';
+                setTimeout(() => { copyBtn.textContent = '클립보드에 복사'; }, 1500);
             });
         };
 
-        const exportAsHtml = () => {
-            const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-
-            const baseCss = document.querySelector("style").textContent;
-            const extraCss = "\ndiv.slot-memo{white-space:pre-wrap}\n"
-                + ".memo-display{width:100%;padding:16px;border:1px solid #dfd7cf;border-radius:14px;background:#fff;font-size:14px;line-height:1.65;color:#222;white-space:pre-wrap}\n"
-                + ".memo-display:empty{display:none}\n";
-
-            let sectionsHtml = "";
-            document.querySelectorAll(".section").forEach((section) => {
-                const title = section.querySelector(".section-title-wrap h2")?.textContent || "";
-                const desc = section.querySelector(".section-title-wrap p")?.textContent || "";
-                const memoText = section.querySelector(".memo")?.value.trim() || "";
-                const chips = Array.from(section.querySelectorAll(".chip")).map((c) => {
-                    const clone = c.cloneNode(true);
-                    clone.querySelectorAll(".chip-delete").forEach((b) => b.remove());
-                    return clone.textContent.trim();
-                });
-                const slots = section.querySelectorAll(".photo-slot.has-image");
-
-                let photosHtml = "";
-                slots.forEach((slot) => {
-                    const src = slot.querySelector(".slot-preview").src;
-                    const alt = slot.querySelector(".slot-preview").alt || "";
-                    const memo = slot.querySelector(".slot-memo").value.trim();
-                    photosHtml += '<article class="photo-slot has-image"><div class="slot-image-area">'
-                        + '<img class="slot-preview" src="' + src + '" alt="' + esc(alt) + '" />'
-                        + '</div>'
-                        + (memo ? '<div class="slot-memo">' + esc(memo) + '</div>' : '')
-                        + '</article>';
-                });
-
-                const chipsHtml = chips.map((c) => '<span class="chip">' + esc(c) + '</span>').join("");
-                const memoHtml = memoText
-                    ? '<div class="memo-display">' + esc(memoText).replace(/\n/g, "<br>") + '</div>'
-                    : '';
-
-                sectionsHtml += '<section class="section"><div class="section-head">'
-                    + '<div class="section-title-wrap"><h2>' + esc(title) + '</h2><p>' + esc(desc) + '</p></div>'
-                    + '<div class="section-count">' + slots.length + ' Photos</div></div>'
-                    + '<div class="section-body"><aside class="note-card"><h3>구도 메모</h3>'
-                    + memoHtml
-                    + (chipsHtml ? '<div class="chip-list">' + chipsHtml + '</div>' : '')
-                    + '</aside><div class="gallery">' + photosHtml + '</div></div></section>';
-            });
-
-            const exportJs = [
-                'document.addEventListener("click",function(e){',
-                '  var a=e.target.closest(".slot-image-area");if(!a)return;',
-                '  var s=a.closest(".photo-slot");if(!s)return;',
-                '  var im=s.querySelector(".slot-preview");if(!im||!im.src)return;',
-                '  var lb=document.getElementById("lb"),li=document.getElementById("lbImg"),lm=document.getElementById("lbMemo");',
-                '  var m=s.querySelector(".slot-memo");',
-                '  li.src=im.src;',
-                '  if(m&&m.textContent.trim()){lm.textContent=m.textContent;lm.style.display="block"}',
-                '  else{lm.style.display="none"}',
-                '  lb.classList.add("active");document.body.style.overflow="hidden"',
-                '});',
-                'var closeLb=function(){document.getElementById("lb").classList.remove("active");document.body.style.overflow=""};',
-                'document.querySelector(".lightbox-close").addEventListener("click",closeLb);',
-                'document.getElementById("lb").addEventListener("click",function(e){if(e.target===this)closeLb()});',
-                'document.addEventListener("keydown",function(e){if(e.key==="Escape")closeLb()});'
-            ].join("\n");
-
-            const htmlParts = [
-                '<!DOCTYPE html>',
-                '<html lang="ko">',
-                '<head>',
-                '<meta charset="UTF-8" />',
-                '<meta name="viewport" content="width=device-width, initial-scale=1.0" />',
-                '<title>웨딩 촬영 시안</title>',
-                '<style>' + baseCss + extraCss + '</style>',
-                '</head>',
-                '<body>',
-                '<div class="wrap">',
-                '<section class="hero"><span class="eyebrow">Wedding Reference Board</span><h1>웨딩 촬영 시안</h1></section>',
-                '<main class="board">' + sectionsHtml + '</main>',
-                '</div>',
-                '<div class="lightbox" id="lb"><button class="lightbox-close" type="button">&times;</button><img class="lightbox-img" id="lbImg" alt="" /><p class="lightbox-memo" id="lbMemo"></p></div>',
-                '<script>' + exportJs + '<' + '/script>',
-                '</body>',
-                '</html>'
-            ];
-
-            const blob = new Blob([htmlParts.join("\n")], { type: "text/html;charset=utf-8" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "웨딩촬영시안.html";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+        /* Init */
+        const init = async () => {
+            const data = await loadData();
+            renderBoard(data);
+            setupLightbox();
+            setupEditToggle();
+            setupJsonExport();
         };
 
-        buildGalleries();
-        setupLightbox();
-        setupEditToggle();
-        setupChipEditing();
-        document.getElementById("exportHtmlBtn").addEventListener("click", exportAsHtml);
+        init();
     </script>
 </body>
 </html>

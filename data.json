@@ -1,0 +1,22 @@
+{
+  "sections": [
+    {
+      "key": "couple",
+      "title": "투샷",
+      "description": "커플 중심의 메인 구도와 분위기 레퍼런스",
+      "groups": []
+    },
+    {
+      "key": "bride",
+      "title": "신부 단독컷",
+      "description": "드레스 라인, 시선 처리, 손동작 중심 레퍼런스",
+      "groups": []
+    },
+    {
+      "key": "groom",
+      "title": "신랑 단독컷",
+      "description": "턱시도 핏, 담백한 포즈, 클래식 무드 중심 레퍼런스",
+      "groups": []
+    }
+  ]
+}

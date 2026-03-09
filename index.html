@@ -226,6 +226,59 @@
         }
 
         /* Group Card */
+        .group-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+        }
+
+        .group-head:hover {
+            background: rgba(255, 255, 255, 0.82);
+        }
+
+        .group-title-input,
+        .group-photo-count,
+        .group-delete-btn,
+        .group-toggle-btn {
+            cursor: default;
+        }
+
+        .group-toggle-btn {
+            appearance: none;
+            width: 26px;
+            height: 26px;
+            border: 1px solid var(--line);
+            background: white;
+            border-radius: 999px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        .group-toggle-btn .chevron {
+            width: 7px;
+            height: 7px;
+            border-right: 2px solid var(--ink);
+            border-bottom: 2px solid var(--ink);
+            transform: rotate(45deg);
+            transition: transform 0.25s ease;
+        }
+
+        .group-card.collapsed .group-toggle-btn .chevron {
+            transform: rotate(-135deg);
+        }
+
+        .group-card.collapsed .group-body {
+            display: none;
+        }
+
         .group-card {
             border: 1px solid var(--line);
             border-radius: var(--radius-lg);
@@ -1106,11 +1159,20 @@
             const head = document.createElement('div');
             head.className = 'group-head';
 
+            const toggleBtn = document.createElement('button');
+            toggleBtn.type = 'button';
+            toggleBtn.className = 'group-toggle-btn';
+            toggleBtn.innerHTML = '<span class="chevron"></span>';
+
             const titleInput = document.createElement('input');
             titleInput.type = 'text';
             titleInput.className = 'group-title-input';
             titleInput.value = groupData.title || '';
             titleInput.placeholder = '그룹 제목 입력...';
+
+            titleInput.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
 
             const photoCount = document.createElement('span');
             photoCount.className = 'group-photo-count';
@@ -1120,13 +1182,37 @@
             deleteBtn.type = 'button';
             deleteBtn.className = 'group-delete-btn';
             deleteBtn.textContent = '삭제';
-            deleteBtn.addEventListener('click', () => {
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 if (!confirm('이 그룹을 삭제하시겠습니까?')) return;
                 const section = card.closest('.section');
                 card.remove();
                 if (section) updateSectionCount(section);
             });
 
+            const toggleGroupCollapse = () => {
+                card.classList.toggle('collapsed');
+            };
+
+            toggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleGroupCollapse();
+            });
+
+            head.addEventListener('click', (e) => {
+                const clickedDeleteBtn = e.target.closest('.group-delete-btn');
+                const clickedTitleInput = e.target.closest('.group-title-input');
+                const clickedPhotoCount = e.target.closest('.group-photo-count');
+                const clickedToggleBtn = e.target.closest('.group-toggle-btn');
+
+                if (clickedDeleteBtn || clickedTitleInput || clickedPhotoCount || clickedToggleBtn) {
+                    return;
+                }
+
+                toggleGroupCollapse();
+            });
+
+            head.appendChild(toggleBtn);
             head.appendChild(titleInput);
             head.appendChild(photoCount);
             head.appendChild(deleteBtn);

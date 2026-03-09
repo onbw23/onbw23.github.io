@@ -72,13 +72,76 @@
             font-size: 16px;
             line-height: 1.7;
         }
+        .hero-title-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
+        .hero-title-row h1 {
+            margin: 18px 0 10px;
+        }
+
+        /* 버튼 크기 축소 */
+        .toolbar-toggle-btn {
+            appearance: none;
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--line);
+            background: white;
+            border-radius: 999px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .toolbar-toggle-btn:hover {
+            box-shadow: 0 6px 16px rgba(34,34,34,0.08);
+        }
+
+        /* 화살표 */
+        .toolbar-toggle-btn .chevron {
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid var(--ink);
+            border-bottom: 2px solid var(--ink);
+            transform: rotate(45deg);
+            transition: transform 0.25s ease;
+        }
+
+        /* 접힌 상태 = 위쪽 화살표 */
+        .toolbar-toggle-btn.collapsed .chevron {
+            transform: rotate(-135deg);
+        }
+
+        /* toolbar */
         .toolbar {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
             margin-top: 24px;
+            overflow: hidden;
+            max-height: 200px;
+            opacity: 1;
+            transition: max-height 0.28s ease, opacity 0.22s ease, margin-top 0.22s ease;
         }
+
+        .toolbar.is-collapsed {
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
+            pointer-events: none;
+        }
+
+        /* .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 24px;
+        } */
 
         .toolbar button {
             appearance: none;
@@ -843,8 +906,21 @@
     <div class="wrap">
         <section class="hero">
             <span class="eyebrow">Wedding Reference Board</span>
-            <h1>웨딩 촬영 시안</h1>
-            <div class="toolbar">
+
+            <div class="hero-title-row">
+                <h1>웨딩 촬영 시안</h1>
+
+                <button
+                    type="button"
+                    class="toolbar-toggle-btn collapsed"
+                    id="toolbarToggleBtn"
+                    aria-expanded="false"
+                >
+                    <span class="chevron"></span>
+                </button>
+            </div>
+
+            <div class="toolbar is-collapsed" id="toolbar">
                 <button type="button" class="btn-primary" onclick="window.print()">PDF / 인쇄 저장</button>
                 <button type="button" class="btn-soft" id="editToggleBtn">편집</button>
                 <button type="button" class="btn-soft" id="exportJsonBtn">JSON 내보내기</button>
@@ -1296,6 +1372,21 @@
             });
         };
 
+        const setupToolbarToggle = () => {
+            const toolbar = document.getElementById('toolbar');
+            const toggleBtn = document.getElementById('toolbarToggleBtn');
+
+            if (!toolbar || !toggleBtn) return;
+
+            toggleBtn.addEventListener('click', () => {
+                const isCollapsed = toolbar.classList.toggle('is-collapsed');
+
+                toggleBtn.classList.toggle('collapsed', isCollapsed);
+                toggleBtn.setAttribute('aria-expanded', String(!isCollapsed));
+                toggleBtn.setAttribute('aria-label', isCollapsed ? '작업 버튼 펼치기' : '작업 버튼 접기');
+            });
+        };
+
         /* Init */
         const init = async () => {
             const data = await loadData();
@@ -1303,6 +1394,7 @@
             setupLightbox();
             setupEditToggle();
             setupJsonExport();
+            setupToolbarToggle();
         };
 
         init();

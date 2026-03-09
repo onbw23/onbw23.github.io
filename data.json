@@ -9,10 +9,10 @@
           "title": "기본",
           "memo": "노말하게",
           "photos": [
-            "images/couple/기본/기본나란히서기1.jpeg",
-            "images/couple/기본/기본나란히서기2.jpeg",
+            "images/couple/basic/standing-side-by-side-1.jpeg",
+            "images/couple/basic/standing-side-by-side-2.jpeg",
             {
-              "src": "images/couple/기본/나란히앉아서1.png",
+              "src": "images/couple/basic/sitting-side-by-side-1.png",
               "memo": "배경맘에듬"
             }
           ]
@@ -21,8 +21,8 @@
           "title": "계단",
           "memo": "계단에서의 구도",
           "photos": [
-            "images/couple/계단/계단사이로마주보고1.jpeg",
-            "images/couple/계단/계단사이로마주보고4.jpeg"
+            "images/couple/stair/facing-on-stairs-1.jpeg",
+            "images/couple/stair/facing-on-stairs-4.jpeg"
           ]
         }
       ]

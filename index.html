@@ -456,6 +456,44 @@
             background: rgba(255, 255, 255, 0.28);
         }
 
+        /* Slot Memo */
+        .slot-memo {
+            display: block;
+            width: 100%;
+            border: none;
+            border-top: 1px solid var(--line);
+            padding: 10px 14px;
+            font: inherit;
+            font-size: 12px;
+            line-height: 1.5;
+            color: var(--ink);
+            background: white;
+            resize: none;
+            outline: none;
+            overflow: hidden;
+        }
+
+        .slot-memo:focus {
+            background: #fffaf6;
+        }
+
+        .slot-memo::placeholder {
+            color: var(--muted);
+            opacity: 0.6;
+        }
+
+        .wrap:not(.editing) .slot-memo {
+            pointer-events: none;
+            resize: none;
+            background: rgba(247, 243, 238, 0.3);
+            font-size: 11px;
+            padding: 8px 12px;
+        }
+
+        .wrap:not(.editing) .slot-memo:placeholder-shown {
+            display: none;
+        }
+
         /* Add Buttons */
         .add-slot-btn {
             aspect-ratio: 4 / 5;
@@ -782,7 +820,8 @@
 
             .toolbar, .mini-btn, .slot-sub, .slot-inner, .slot-overlay,
             .lightbox, .add-slot-btn, .add-group-btn, .group-delete-btn,
-            .photo-slot:not(.has-image), .modal-overlay {
+            .photo-slot:not(.has-image), .modal-overlay,
+            .slot-memo:placeholder-shown {
                 display: none !important;
             }
 
@@ -935,24 +974,28 @@
             });
         };
 
-        const createPhotoSlot = (photoPath = null) => {
+        const createPhotoSlot = (photoData = null) => {
+            const src = typeof photoData === 'string' ? photoData
+                      : photoData?.src || null;
+            const memoText = typeof photoData === 'object' && photoData?.memo || '';
+
             slotCounter++;
             const slotId = `slot-${slotCounter}`;
-            const fileName = photoPath ? photoPath.split('/').pop() : '';
+            const fileName = src ? src.split('/').pop() : '';
 
             const slot = document.createElement('article');
             slot.className = 'photo-slot';
             slot.dataset.slot = slotId;
 
-            if (photoPath) {
+            if (src) {
                 slot.classList.add('has-image');
-                slot.dataset.srcPath = photoPath;
+                slot.dataset.srcPath = src;
             }
 
             slot.innerHTML = `
                 <div class="slot-image-area">
                     <input type="file" accept="image/*" id="input-${slotId}" />
-                    <img class="slot-preview" src="${photoPath || ''}" alt="레퍼런스 이미지" />
+                    <img class="slot-preview" src="${src || ''}" alt="레퍼런스 이미지" />
                     <label class="slot-inner" for="input-${slotId}">
                         <div class="slot-icon">＋</div>
                         <div class="slot-title">사진 추가</div>
@@ -966,7 +1009,14 @@
                         </div>
                     </div>
                 </div>
+                <textarea class="slot-memo" rows="1" placeholder="사진 메모...">${memoText}</textarea>
             `;
+
+            const slotMemo = slot.querySelector('.slot-memo');
+            slotMemo.addEventListener('input', () => {
+                slotMemo.style.height = 'auto';
+                slotMemo.style.height = `${slotMemo.scrollHeight}px`;
+            });
 
             attachSlotEvents(slot);
             return slot;
@@ -1100,14 +1150,16 @@
 
         const openLightbox = (slot) => {
             const preview = slot.querySelector('.slot-preview');
+            const slotMemo = slot.querySelector('.slot-memo')?.value.trim() || '';
             const groupCard = slot.closest('.group-card');
             const groupTitle = groupCard?.querySelector('.group-title-input')?.value || '';
 
             document.getElementById('lightboxImg').src = preview.src;
 
             const memoEl = document.getElementById('lightboxMemo');
-            if (groupTitle) {
-                memoEl.textContent = groupTitle;
+            const displayParts = [groupTitle, slotMemo].filter(Boolean);
+            if (displayParts.length) {
+                memoEl.textContent = displayParts.join(' — ');
                 memoEl.style.display = 'block';
             } else {
                 memoEl.style.display = 'none';
@@ -1175,13 +1227,16 @@
 
                     const photos = [];
                     groupEl.querySelectorAll('.photo-slot.has-image').forEach((slot) => {
+                        const slotMemo = slot.querySelector('.slot-memo')?.value.trim() || '';
+                        let src = '';
                         if (slot.dataset.srcPath) {
-                            photos.push(slot.dataset.srcPath);
+                            src = slot.dataset.srcPath;
                         } else if (slot.dataset.isUploaded === 'true') {
                             const fileName = slot.dataset.originalName || 'photo.jpg';
                             const safeGroup = groupTitle || 'unnamed';
-                            photos.push(`images/${key}/${safeGroup}/${fileName}`);
+                            src = `images/${key}/${safeGroup}/${fileName}`;
                         }
+                        photos.push(slotMemo ? { src, memo: slotMemo } : src);
                     });
 
                     groups.push({ title: groupTitle, memo, photos });
